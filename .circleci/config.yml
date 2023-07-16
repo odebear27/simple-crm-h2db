@@ -14,11 +14,11 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-            echo ${DOCKER_HUB_PWD} | docker login -u ${DOCKER_HUB_USERNAME} --password-stdin
-            docker build -t ${DOCKER_HUB_USERNAME}/simple-crm-h2db:${CIRCLE_SHA1} .
-            docker build -t ${DOCKER_HUB_USERNAME}/simple-crm-h2db:latest .
-            docker push ${DOCKER_HUB_USERNAME}/simple-crm-h2db:${CIRCLE_SHA1}
-            docker push ${DOCKER_HUB_USERNAME}/simple-crm-h2db:latest
+            docker login -u ${DOCKER_LOGIN} -p ${DOCKER_PASSWORD}
+            docker build -t ${DOCKER_LOGIN}/simple-crm-h2db:${CIRCLE_SHA1} .
+            docker build -t ${DOCKER_LOGIN}/simple-crm-h2db:latest .
+            docker push ${DOCKER_LOGIN}/simple-crm-h2db:${CIRCLE_SHA1}
+            docker push ${DOCKER_LOGIN}/simple-crm-h2db:latest
 
 # workflows:
 #   simple_workflow:
