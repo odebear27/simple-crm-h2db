@@ -1,0 +1,26 @@
+version: 2.1
+# orbs:
+#   node: circleci/node@5.0.1
+#   docker: circleci/docker@2.1.4
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:17.0.7
+    steps:
+      - checkout
+      - run: mvn clean package
+      - setup_remote_docker
+
+      - run:
+        name: Build and Push Docker Image
+        command: |
+          docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PWD}
+          docker build -t ${DOCKER_HUB_USERNAME}/simple-crm-h2db:${CIRCLE_SHA1} .
+          docker build -t ${DOCKER_HUB_USERNAME}/simple-crm-h2db:latest .
+          docker push ${DOCKER_HUB_USERNAME}/simple-crm-h2db:${CIRCLE_SHA1}
+          docker push ${DOCKER_HUB_USERNAME}/simple-crm-h2db:latest
+
+# workflows:
+#   simple_workflow:
+#     jobs:
+#       - build
